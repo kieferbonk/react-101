@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 class CodeBlock extends React.Component {
   constructor(props) {
@@ -24,11 +25,28 @@ class CodeBlock extends React.Component {
   }
 
   render() {
+    const Block = styled.div`
+      background: #ccc;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 1em;
+    `;
+
+    const Button = styled.button`
+      margin: 0 0.7em;
+      border-color: hotpink;
+    `;
+
+    const PrettierButton = styled(Button)`
+      border-color: palevioletred;
+    `;
+
     return (
-      <div>
+      <Block>
         {this.state.header}
-        <button onClick={this.rotateHeader}>🎡</button>
-      </div>
+        <Button onClick={this.rotateHeader}>🎡</Button>
+        <PrettierButton onClick={this.rotateHeader}>🎡</PrettierButton>
+      </Block>
     );
   }
 }
