@@ -1,26 +1,48 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { prop } from 'styled-tools';
 
 class CodeBlock extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      header: this.props.header
+      header: this.props.header,
+      color: 'red',
+      items: []
     };
 
     this.headers = ['FOO', 'BAR', 'BAZ'];
 
-    this.rotateHeader = this.rotateHeader.bind(this);
+    this.addItem = this.addItem.bind(this);
+    this.removeItem = this.removeItem.bind(this);
+    this.toggleColor = this.toggleColor.bind(this);
   }
 
-  rotateHeader() {
-    const rand = Math.floor(Math.random() * 3);
-    const header = this.headers[rand];
-
+  addItem() {
     this.setState({
-      header
+      items: [
+        ...this.state.items,
+        {
+          color: this.state.color
+        }
+      ]
+    });
+    // let newItems = this.state.items;
+    // newItems.push({ color: "hotpink" });
+    // this.setState({ items: newItems });
+  }
+
+  removeItem() {
+    this.setState({
+      items: this.state.items.slice(0, -1)
+    });
+  }
+
+  toggleColor() {
+    this.setState({
+      color: this.state.color === 'red' ? 'green' : 'red'
     });
   }
 
@@ -37,15 +59,36 @@ class CodeBlock extends React.Component {
       border-color: hotpink;
     `;
 
+    const ToggleButton = styled(Button)`
+      background: ${this.state.color};
+    `;
+
     const PrettierButton = styled(Button)`
       border-color: palevioletred;
+    `;
+
+    const Item = styled.div`
+      background-color: ${prop('color', 'hotpink')};
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin: 0 1em;
+      display: inline-block;
     `;
 
     return (
       <Block>
         {this.state.header}
-        <Button onClick={this.rotateHeader}>🎡</Button>
-        <PrettierButton onClick={this.rotateHeader}>🎡</PrettierButton>
+        <ToggleButton onClick={this.toggleColor}>🐑</ToggleButton>
+        <Button onClick={this.addItem}>+</Button>
+        <PrettierButton onClick={this.removeItem}>-</PrettierButton>
+        {this.state.items && (
+          <div>
+            {this.state.items.map((item, key) => (
+              <Item color={item.color} key={`list_item_${key}`} />
+            ))}
+          </div>
+        )}
       </Block>
     );
   }
